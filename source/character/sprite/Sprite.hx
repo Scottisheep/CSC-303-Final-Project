@@ -1,36 +1,30 @@
 package character.sprite;
 
 import flixel.FlxSprite;
-import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 
 class Sprite extends FlxSprite
 {
-	private static var PLAYER_1_START_X:Float = 30;
-	private static var PLAYER_2_START_X:Float = 350;
-	private static var PLAYER_START_Y:Float = 280;
+	private var chr:Character;
 
-	override public function new(Player:Int, Character:Int)
+	override public function new(c:Character)
 	{
-		var startPos:FlxPoint;
+		chr = c;
 
-		switch Player
+		super(chr.position.x, chr.position.y);
+
+		switch chr.fighter
 		{
 			case 1:
-				startPos = FlxPoint.weak(PLAYER_1_START_X, PLAYER_START_Y);
-
+				makeGraphic(chr.width, chr.height, FlxColor.BLUE);
 			case 2:
-				startPos = FlxPoint.weak(PLAYER_2_START_X, PLAYER_START_Y);
+				makeGraphic(chr.width, chr.height, FlxColor.RED);
 		}
+	}
 
-		super(startPos.x, startPos.y);
-
-		switch Character
-		{
-			case 1:
-				makeGraphic(100, 250, FlxColor.BLUE);
-			case 2:
-				makeGraphic(110, 240, FlxColor.RED);
-		}
+	override function update(elapsed:Float) {
+		x = chr.position.x;
+		y = chr.position.y;
+		super.update(elapsed);
 	}
 }
