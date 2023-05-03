@@ -1,52 +1,77 @@
 package character;
 
-import character.collision.Pushbox;
 import character.collision.Hitbox;
 import character.collision.Hurtbox;
+import character.collision.Pushbox;
+import character.sprite.Sprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
-import character.sprite.Sprite;
 
 class Character extends FlxGroup
 {
 	private static var PLAYER_1_START_X:Float = 30;
 	private static var PLAYER_2_START_X:Float = 350;
-	private static var PLAYER_START_Y:Float = 280;
+	private static var PLAYER_START_Y:Float = 50;
 
-	public var width:Int = 100;
-	public var height:Int = 250;
+	public var width:Int = 75;
+	public var height:Int = 150;
 
 	public var fighter:Int;
 	public var player:Int;
-	public var position:FlxPoint;
+	public var position:FlxPoint = new FlxPoint(0, 0);
 
-	var hurtboxes:FlxTypedGroup<Hurtbox> = new FlxTypedGroup<Hurtbox>(3);
-	var hitboxes:FlxTypedGroup<Hitbox> = new FlxTypedGroup<Hitbox>(3);
-	var sprite:Sprite;
-	var pushbox:Pushbox;
+	public var hurtboxes:FlxTypedGroup<Hurtbox>;
+	public var hitboxes:FlxTypedGroup<Hitbox>;
+	public var sprite:Sprite;
+	public var pushbox:Pushbox;
 
-	public function new(player:Int, fighter:Int)
+	public function new(player:Bool, fighter:Int)
 	{
 		super();
-		position.y = PLAYER_START_Y;
-		switch player
+
+		if (player)
 		{
-			case 1:
-				position.x = PLAYER_1_START_X;
-
-			case 2:
-				position.y = PLAYER_2_START_X;
+			position.x = PLAYER_1_START_X;
 		}
-		
-		sprite = new Sprite(this);
+		else
+		{
+			position.x = PLAYER_2_START_X;
+		}
 
+		position.y = PLAYER_START_Y;
+
+		initializeAll();
 		addAllToGroup();
 	}
 
-	private function addAllToGroup() {
+	private function initializeAll()
+	{
+		sprite = new Sprite(this);
+		pushbox = new Pushbox(this);
+		hurtboxes = new FlxTypedGroup<Hurtbox>(3);
+		hitboxes = new FlxTypedGroup<Hitbox>(3);
+	}
+
+	private function addAllToGroup()
+	{
 		add(sprite);
 		add(hurtboxes);
 		add(hitboxes);
 		add(pushbox);
+	}
+
+	private function updateGroup(elapsed:Float)
+	{
+		sprite.update(elapsed);
+		hurtboxes.update(elapsed);
+		hitboxes.update(elapsed);
+		pushbox.update(elapsed);
+	}
+
+	override function update(elapsed:Float)
+	{
+		position = FlxPoint.weak(pushbox.x, pushbox.y);
+		updateGroup(elapsed);
+		super.update(elapsed);
 	}
 }

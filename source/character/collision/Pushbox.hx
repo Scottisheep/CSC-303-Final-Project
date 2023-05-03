@@ -1,20 +1,23 @@
 package character.collision;
 
-import flixel.math.FlxPoint;
-import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.util.FlxColor;
 
-class Pushbox extends FlxObject {
+class Pushbox extends FlxSprite
+{
+	private var chr:Character;
 
-    private var chr:Character;
+	override public function new(c:Character)
+	{
+		chr = c;
+		super(chr.position.x, chr.position.y);
+		drag.y = 100;
+		setSize(chr.width, chr.height);
+		makeGraphic(chr.width, chr.height, FlxColor.YELLOW);
+	}
 
-    override public function new(c:Character) {
-        chr = c;
-        super(chr.position.x, chr.position.y);
-        setSize(chr.width, chr.height);
-    }
-
-    override function update(elapsed:Float) {
-        chr.position = FlxPoint.weak(x, y);
-        super.update(elapsed);
-    }
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+	}
 }
