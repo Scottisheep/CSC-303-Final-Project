@@ -1,7 +1,6 @@
 package character.collision;
 
 import flixel.FlxSprite;
-import flixel.util.FlxColor;
 
 class Pushbox extends FlxSprite
 {
@@ -11,13 +10,15 @@ class Pushbox extends FlxSprite
 	{
 		chr = c;
 		super(chr.position.x, chr.position.y);
-		drag.y = 100;
+		acceleration.y = 150;
 		setSize(chr.width, chr.height);
-		makeGraphic(chr.width, chr.height, FlxColor.YELLOW);
+		updateHitbox();
+		makeGraphic(Math.round(chr.sprite.width), Math.round(chr.sprite.height), 0x52FBFF00);
 	}
 
 	override function update(elapsed:Float)
 	{
+		acceleration.y = chr.gravMod;
 		super.update(elapsed);
 	}
 }

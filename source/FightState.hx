@@ -16,8 +16,6 @@ class FightState extends FlxState
 		super.create();
 		initCharacters();
 		initStage();
-
-		FlxG.watch.add(player1.pushbox, "drag");
 	}
 
 	override function update(elapsed:Float)

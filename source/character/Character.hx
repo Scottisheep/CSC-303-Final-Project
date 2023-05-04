@@ -4,6 +4,7 @@ import character.collision.Hitbox;
 import character.collision.Hurtbox;
 import character.collision.Pushbox;
 import character.sprite.Sprite;
+import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 
@@ -13,11 +14,19 @@ class Character extends FlxGroup
 	private static var PLAYER_2_START_X:Float = 350;
 	private static var PLAYER_START_Y:Float = 50;
 
+	public var up:Bool;
+	public var down:Bool;
+	public var left:Bool;
+	public var right:Bool;
+	public var attack:Bool;
+	public var special:Bool;
+
 	public var width:Int = 75;
 	public var height:Int = 150;
+	public var gravMod:Float = 250;
 
 	public var fighter:Int;
-	public var player:Int;
+	public var player:Bool;
 	public var position:FlxPoint = new FlxPoint(0, 0);
 
 	public var hurtboxes:FlxTypedGroup<Hurtbox>;
@@ -25,11 +34,13 @@ class Character extends FlxGroup
 	public var sprite:Sprite;
 	public var pushbox:Pushbox;
 
-	public function new(player:Bool, fighter:Int)
+	public function new(p:Bool, f:Int)
 	{
 		super();
+		fighter = f;
+		player = p;
 
-		if (player)
+		if (p)
 		{
 			position.x = PLAYER_1_START_X;
 		}
@@ -41,7 +52,6 @@ class Character extends FlxGroup
 		position.y = PLAYER_START_Y;
 
 		initializeAll();
-		addAllToGroup();
 	}
 
 	private function initializeAll()
@@ -50,28 +60,37 @@ class Character extends FlxGroup
 		pushbox = new Pushbox(this);
 		hurtboxes = new FlxTypedGroup<Hurtbox>(3);
 		hitboxes = new FlxTypedGroup<Hitbox>(3);
-	}
 
-	private function addAllToGroup()
-	{
 		add(sprite);
 		add(hurtboxes);
 		add(hitboxes);
 		add(pushbox);
 	}
 
-	private function updateGroup(elapsed:Float)
+	private function getInputs()
 	{
-		sprite.update(elapsed);
-		hurtboxes.update(elapsed);
-		hitboxes.update(elapsed);
-		pushbox.update(elapsed);
+		if (player)
+		{
+			left = FlxG.keys.justPressed.A;
+			right = FlxG.keys.justPressed.D;
+
+			attack = FlxG.keys.justPressed.T;
+			special = FlxG.keys.justPressed.Y;
+		}
+		else
+		{
+			left = FlxG.keys.justPressed.LEFT;
+			right = FlxG.keys.justPressed.RIGHT;
+
+			attack = FlxG.keys.justPressed.COMMA;
+			special = FlxG.keys.justPressed.PERIOD;
+		}
 	}
 
 	override function update(elapsed:Float)
 	{
 		position = FlxPoint.weak(pushbox.x, pushbox.y);
-		updateGroup(elapsed);
+		getInputs();
 		super.update(elapsed);
 	}
 }

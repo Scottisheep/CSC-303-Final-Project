@@ -20,9 +20,11 @@ class Sprite extends FlxSprite
 			case 2:
 				makeGraphic(chr.width, chr.height, FlxColor.RED);
 		}
+		updateHitbox();
 	}
 
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float)
+	{
 		x = chr.position.x;
 		y = chr.position.y;
 		super.update(elapsed);

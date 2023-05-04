@@ -11,6 +11,7 @@ class Stage extends FlxSprite
 	override public function new(StageSelector:Int)
 	{
 		super(0, STAGE_HEIGHT);
+		immovable = true;
 
 		switch StageSelector
 		{
