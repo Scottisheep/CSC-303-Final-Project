@@ -1,8 +1,9 @@
 package character.collision;
 
-import flixel.FlxSprite;
+import flixel.FlxObject;
+import flixel.math.FlxPoint;
 
-class Pushbox extends FlxSprite
+class Pushbox extends FlxObject
 {
 	private var chr:Character;
 
@@ -10,15 +11,42 @@ class Pushbox extends FlxSprite
 	{
 		chr = c;
 		super(chr.position.x, chr.position.y);
-		acceleration.y = 150;
+		maxVelocity = FlxPoint.weak(chr.speedCap, chr.gravMod);
+		acceleration.y = chr.gravMod;
+		drag.x = chr.moveAccel;
 		setSize(chr.width, chr.height);
-		updateHitbox();
-		makeGraphic(Math.round(chr.sprite.width), Math.round(chr.sprite.height), 0x52FBFF00);
+	}
+
+	private function doMovement()
+	{
+		switch chr.direction
+		{
+			case Forwards:
+				if (chr.player)
+				{
+					acceleration.x = chr.moveAccel;
+				}
+				else
+				{
+					acceleration.x = -chr.moveAccel;
+				}
+			case Backwards:
+				if (chr.player)
+				{
+					acceleration.x = -chr.moveAccel;
+				}
+				else
+				{
+					acceleration.x = chr.moveAccel;
+				}
+			case Stationary:
+				acceleration.x = 0;
+		}
 	}
 
 	override function update(elapsed:Float)
 	{
-		acceleration.y = chr.gravMod;
+		doMovement();
 		super.update(elapsed);
 	}
 }
