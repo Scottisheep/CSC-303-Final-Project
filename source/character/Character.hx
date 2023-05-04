@@ -8,22 +8,42 @@ import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 
+enum MovementDirection
+{
+	Forwards;
+	Backwards;
+	Stationary;
+}
+
+enum Action
+{
+	FrontAttack;
+	BackAttack;
+	NeutralAttack;
+	FrontSpecial;
+	BackSpecial;
+	NeutralSpecial;
+	None;
+}
+
 class Character extends FlxGroup
 {
-	private static var PLAYER_1_START_X:Float = 30;
-	private static var PLAYER_2_START_X:Float = 350;
-	private static var PLAYER_START_Y:Float = 50;
+	private static var OFFSET_FROM_SCREEN:Float = 65;
+	private static var PLAYER_START_Y:Float = 250;
 
-	public var up:Bool;
-	public var down:Bool;
-	public var left:Bool;
-	public var right:Bool;
+	public var front:Bool;
+	public var back:Bool;
 	public var attack:Bool;
 	public var special:Bool;
+	public var direction:MovementDirection;
+	public var action:Action;
 
 	public var width:Int = 75;
 	public var height:Int = 150;
 	public var gravMod:Float = 250;
+	public var backwardsSpeedModifier:Float = 0.55;
+	public var speedCap:Float = 350;
+	public var moveAccel:Float = 5000;
 
 	public var fighter:Int;
 	public var player:Bool;
@@ -42,11 +62,11 @@ class Character extends FlxGroup
 
 		if (p)
 		{
-			position.x = PLAYER_1_START_X;
+			position.x = OFFSET_FROM_SCREEN;
 		}
 		else
 		{
-			position.x = PLAYER_2_START_X;
+			position.x = FlxG.width - width - OFFSET_FROM_SCREEN;
 		}
 
 		position.y = PLAYER_START_Y;
@@ -71,19 +91,81 @@ class Character extends FlxGroup
 	{
 		if (player)
 		{
-			left = FlxG.keys.justPressed.A;
-			right = FlxG.keys.justPressed.D;
+			front = FlxG.keys.pressed.D;
+			back = FlxG.keys.pressed.A;
 
-			attack = FlxG.keys.justPressed.T;
-			special = FlxG.keys.justPressed.Y;
+			attack = FlxG.keys.pressed.T;
+			special = FlxG.keys.pressed.Y;
 		}
 		else
 		{
-			left = FlxG.keys.justPressed.LEFT;
-			right = FlxG.keys.justPressed.RIGHT;
+			front = FlxG.keys.pressed.LEFT;
+			back = FlxG.keys.pressed.RIGHT;
 
-			attack = FlxG.keys.justPressed.COMMA;
-			special = FlxG.keys.justPressed.PERIOD;
+			attack = FlxG.keys.pressed.COMMA;
+			special = FlxG.keys.pressed.PERIOD;
+		}
+	}
+
+	private function getDirection()
+	{
+		if (front && !back)
+		{
+			direction = Forwards;
+		}
+		else if (back && !front)
+		{
+			direction = Backwards;
+		}
+		else
+		{
+			direction = Stationary;
+		}
+	}
+
+	private function getAction()
+	{
+		switch direction
+		{
+			case Forwards:
+				if (attack)
+				{
+					action = FrontAttack;
+				}
+				else if (special)
+				{
+					action = FrontSpecial;
+				}
+				else
+				{
+					action = None;
+				}
+			case Backwards:
+				if (attack)
+				{
+					action = BackAttack;
+				}
+				else if (special)
+				{
+					action = BackSpecial;
+				}
+				else
+				{
+					action = None;
+				}
+			case Stationary:
+				if (attack)
+				{
+					action = NeutralAttack;
+				}
+				else if (special)
+				{
+					action = NeutralSpecial;
+				}
+				else
+				{
+					action = None;
+				}
 		}
 	}
 
@@ -91,6 +173,8 @@ class Character extends FlxGroup
 	{
 		position = FlxPoint.weak(pushbox.x, pushbox.y);
 		getInputs();
+		getDirection();
+		getAction();
 		super.update(elapsed);
 	}
 }

@@ -19,6 +19,8 @@ class Sprite extends FlxSprite
 				makeGraphic(chr.width, chr.height, FlxColor.BLUE);
 			case 2:
 				makeGraphic(chr.width, chr.height, FlxColor.RED);
+			default:
+				makeGraphic(chr.width, chr.height, FlxColor.BLACK);
 		}
 		updateHitbox();
 	}

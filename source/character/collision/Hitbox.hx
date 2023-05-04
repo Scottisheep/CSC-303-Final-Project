@@ -1,5 +1,5 @@
 package character.collision;
 
-import flixel.FlxSprite;
+import flixel.FlxObject;
 
-class Hitbox extends FlxSprite {}
+class Hitbox extends FlxObject {}
