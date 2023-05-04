@@ -41,8 +41,9 @@ class Character extends FlxGroup
 	public var width:Int = 75;
 	public var height:Int = 150;
 	public var gravMod:Float = 250;
-	public var speedCap:Float = 150;
-	public var moveAccel:Float = 250;
+	public var backwardsSpeedModifier:Float = 0.55;
+	public var speedCap:Float = 350;
+	public var moveAccel:Float = 5000;
 
 	public var fighter:Int;
 	public var player:Bool;

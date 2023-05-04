@@ -22,6 +22,7 @@ class Pushbox extends FlxObject
 		switch chr.direction
 		{
 			case Forwards:
+				maxVelocity = FlxPoint.weak(chr.speedCap, chr.gravMod);
 				if (chr.player)
 				{
 					acceleration.x = chr.moveAccel;
@@ -31,13 +32,14 @@ class Pushbox extends FlxObject
 					acceleration.x = -chr.moveAccel;
 				}
 			case Backwards:
+				maxVelocity = FlxPoint.weak(chr.speedCap * chr.backwardsSpeedModifier, chr.gravMod);
 				if (chr.player)
 				{
-					acceleration.x = -chr.moveAccel;
+					acceleration.x = -chr.moveAccel * chr.backwardsSpeedModifier;
 				}
 				else
 				{
-					acceleration.x = chr.moveAccel;
+					acceleration.x = chr.moveAccel * chr.backwardsSpeedModifier;
 				}
 			case Stationary:
 				acceleration.x = 0;
