@@ -1,5 +1,6 @@
 package character.collision;
 
+import flixel.system.debug.FlxDebugger;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
@@ -17,11 +18,12 @@ class Hitbox extends FlxSprite
 
 	override public function new(character:Character, boxNumber:Int)
 	{
+		debugBoundingBoxColor = FlxColor.RED;
 		box = boxNumber;
 		chr = character;
 		colliding = false;
 		super(0, 0);
-		makeGraphic(1, 1, FlxColor.RED);
+		makeGraphic(1, 1, spriteColor);
 		visible = false;
 	}
 

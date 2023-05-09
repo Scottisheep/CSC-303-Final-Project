@@ -218,7 +218,7 @@ class Character extends FlxGroup
 			if (action == DebugAttack)
 			{
 				testAttack();
-			}
+			} else {action = Ready;}
 			actionJustStarted = false;
 		}
 	}

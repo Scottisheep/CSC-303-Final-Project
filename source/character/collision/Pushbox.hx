@@ -20,6 +20,7 @@ class Pushbox extends FlxSprite
 
 	private function doMovement()
 	{
+		if(chr.action == Ready) {
 		switch chr.direction
 		{
 			case Forwards:
@@ -45,6 +46,7 @@ class Pushbox extends FlxSprite
 			case Stationary:
 				acceleration.x = 0;
 		}
+	}
 	}
 
 	override function update(elapsed:Float)
