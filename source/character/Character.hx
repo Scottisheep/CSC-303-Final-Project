@@ -7,6 +7,7 @@ import character.sprite.Sprite;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
+import haxe.Timer;
 
 enum MovementDirection
 {
@@ -23,7 +24,9 @@ enum Action
 	FrontSpecial;
 	BackSpecial;
 	NeutralSpecial;
-	None;
+	Ready;
+	Recovery;
+	DebugAttack;
 }
 
 class Character extends FlxGroup
@@ -36,7 +39,8 @@ class Character extends FlxGroup
 	public var attack:Bool;
 	public var special:Bool;
 	public var direction:MovementDirection;
-	public var action:Action;
+	public var action:Action = Ready;
+	public var actionJustStarted:Bool = true;
 
 	public var width:Int = 75;
 	public var height:Int = 150;
@@ -81,10 +85,16 @@ class Character extends FlxGroup
 		hurtboxes = new FlxTypedGroup<Hurtbox>(3);
 		hitboxes = new FlxTypedGroup<Hitbox>(3);
 
+		for (i in 1...4)
+		{
+			hurtboxes.add(new Hurtbox(this, i));
+			hitboxes.add(new Hitbox(this, i));
+		}
+
 		add(sprite);
+		add(pushbox);
 		add(hurtboxes);
 		add(hitboxes);
-		add(pushbox);
 	}
 
 	private function getInputs()
@@ -125,47 +135,91 @@ class Character extends FlxGroup
 
 	private function getAction()
 	{
-		switch direction
+		if (action == Ready)
 		{
-			case Forwards:
-				if (attack)
-				{
-					action = FrontAttack;
-				}
-				else if (special)
-				{
-					action = FrontSpecial;
-				}
-				else
-				{
-					action = None;
-				}
-			case Backwards:
-				if (attack)
-				{
-					action = BackAttack;
-				}
-				else if (special)
-				{
-					action = BackSpecial;
-				}
-				else
-				{
-					action = None;
-				}
-			case Stationary:
-				if (attack)
-				{
-					action = NeutralAttack;
-				}
-				else if (special)
-				{
-					action = NeutralSpecial;
-				}
-				else
-				{
-					action = None;
-				}
+			switch direction
+			{
+				case Forwards:
+					if (attack)
+					{
+						action = FrontAttack;
+						actionJustStarted = true;
+					}
+					else if (special)
+					{
+						action = FrontSpecial;
+						actionJustStarted = true;
+					}
+				case Backwards:
+					if (attack)
+					{
+						action = BackAttack;
+						actionJustStarted = true;
+					}
+					else if (special)
+					{
+						action = BackSpecial;
+						actionJustStarted = true;
+					}
+				case Stationary:
+					if (attack)
+					{
+						action = NeutralAttack;
+						actionJustStarted = true;
+					}
+					else if (special)
+					{
+						action = NeutralSpecial;
+						actionJustStarted = true;
+					}
+			}
+
+			if (FlxG.keys.justPressed.SPACE)
+			{
+				action = DebugAttack;
+				actionJustStarted = true;
+			}
+		}
+	}
+
+	private function testAttack()
+	{
+		trace("attack start");
+		for (box in hitboxes)
+		{
+			box.checkAction();
+		}
+		Timer.delay(function onAttackEnd()
+		{
+			trace("attack end");
+			action = Recovery;
+			trace("recovery start");
+			Timer.delay(function onRecoveryEnd()
+			{
+				trace("recovery end");
+				action = Ready;
+			}, 300);
+		}, 850);
+	}
+
+	private function execAction()
+	{
+		if (actionJustStarted)
+		{
+			// switch action
+			// {
+			// 	case FrontAttack:
+			// 	case NeutralAttack:
+			// 	case BackAttack:
+			// 	case FrontSpecial:
+			// 	case NeutralSpecial:
+			// 	case BackSpecial:
+			// }
+			if (action == DebugAttack)
+			{
+				testAttack();
+			}
+			actionJustStarted = false;
 		}
 	}
 
@@ -175,6 +229,7 @@ class Character extends FlxGroup
 		getInputs();
 		getDirection();
 		getAction();
+		execAction();
 		super.update(elapsed);
 	}
 }

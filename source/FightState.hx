@@ -20,7 +20,9 @@ class FightState extends FlxState
 		initCharacters();
 		initStage();
 
+		FlxG.watch.add(player1, "action");
 		FlxG.watch.add(player1, "direction");
+		FlxG.watch.add(player1, "actionJustStarted");
 	}
 
 	override function update(elapsed:Float)
@@ -32,10 +34,10 @@ class FightState extends FlxState
 	private function initCharacters()
 	{
 		player1 = new Character(true, 1);
-		player2 = new Character(false, 2);
+		// player2 = new Character(false, 2);
 
 		add(player1);
-		add(player2);
+		// add(player2);
 	}
 
 	private function initStage()
@@ -51,10 +53,10 @@ class FightState extends FlxState
 
 	private function doCollision()
 	{
-		FlxG.collide(player1.pushbox, player2.pushbox);
+		// FlxG.collide(player1.pushbox, player2.pushbox);
 		FlxG.collide(player1.pushbox, stage);
-		FlxG.collide(player2.pushbox, stage);
+		// FlxG.collide(player2.pushbox, stage);
 		FlxG.collide(player1.pushbox, leftScreenBound);
-		FlxG.collide(player2.pushbox, rightScreenBound);
+		// FlxG.collide(player2.pushbox, rightScreenBound);
 	}
 }

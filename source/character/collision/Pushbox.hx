@@ -1,9 +1,9 @@
 package character.collision;
 
-import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 
-class Pushbox extends FlxObject
+class Pushbox extends FlxSprite
 {
 	private var chr:Character;
 
@@ -14,6 +14,7 @@ class Pushbox extends FlxObject
 		maxVelocity = FlxPoint.weak(chr.speedCap, chr.gravMod);
 		acceleration.y = chr.gravMod;
 		drag.x = chr.moveAccel;
+		makeGraphic(chr.width, chr.height, 0x2AFFFB00);
 		setSize(chr.width, chr.height);
 	}
 
