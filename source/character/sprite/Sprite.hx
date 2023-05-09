@@ -1,7 +1,6 @@
 package character.sprite;
 
 import flixel.FlxSprite;
-import flixel.util.FlxColor;
 
 class Sprite extends FlxSprite
 {
@@ -13,15 +12,8 @@ class Sprite extends FlxSprite
 
 		super(chr.position.x, chr.position.y);
 
-		switch chr.fighter
-		{
-			case 1:
-				makeGraphic(chr.width, chr.height, FlxColor.BLUE);
-			case 2:
-				makeGraphic(chr.width, chr.height, FlxColor.RED);
-			default:
-				makeGraphic(chr.width, chr.height, FlxColor.BLACK);
-		}
+		makeGraphic(chr.width, chr.height, 0x00000000);
+
 		updateHitbox();
 	}
 
