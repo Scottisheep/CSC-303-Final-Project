@@ -1,9 +1,10 @@
 package character.collision;
 
-import flixel.FlxSprite;
+import flixel.FlxObject;
 import flixel.math.FlxPoint;
+import flixel.util.FlxColor;
 
-class Pushbox extends FlxSprite
+class Pushbox extends FlxObject
 {
 	private var chr:Character;
 
@@ -14,39 +15,43 @@ class Pushbox extends FlxSprite
 		maxVelocity = FlxPoint.weak(chr.speedCap, chr.gravMod);
 		acceleration.y = chr.gravMod;
 		drag.x = chr.moveAccel;
-		makeGraphic(chr.width, chr.height, 0x2AFFFB00);
 		setSize(chr.width, chr.height);
+
+		#if FLX_DEBUG
+		debugBoundingBoxColor = FlxColor.YELLOW;
+		#end
 	}
 
 	private function doMovement()
 	{
-		if(chr.action == Ready) {
-		switch chr.direction
+		if (chr.action == Ready)
 		{
-			case Forwards:
-				maxVelocity = FlxPoint.weak(chr.speedCap, chr.gravMod);
-				if (chr.player)
-				{
-					acceleration.x = chr.moveAccel;
-				}
-				else
-				{
-					acceleration.x = -chr.moveAccel;
-				}
-			case Backwards:
-				maxVelocity = FlxPoint.weak(chr.speedCap * chr.backwardsSpeedModifier, chr.gravMod);
-				if (chr.player)
-				{
-					acceleration.x = -chr.moveAccel * chr.backwardsSpeedModifier;
-				}
-				else
-				{
-					acceleration.x = chr.moveAccel * chr.backwardsSpeedModifier;
-				}
-			case Stationary:
-				acceleration.x = 0;
+			switch chr.direction
+			{
+				case Forwards:
+					maxVelocity = FlxPoint.weak(chr.speedCap, chr.gravMod);
+					if (chr.player)
+					{
+						acceleration.x = chr.moveAccel;
+					}
+					else
+					{
+						acceleration.x = -chr.moveAccel;
+					}
+				case Backwards:
+					maxVelocity = FlxPoint.weak(chr.speedCap * chr.backwardsSpeedModifier, chr.gravMod);
+					if (chr.player)
+					{
+						acceleration.x = -chr.moveAccel * chr.backwardsSpeedModifier;
+					}
+					else
+					{
+						acceleration.x = chr.moveAccel * chr.backwardsSpeedModifier;
+					}
+				case Stationary:
+					acceleration.x = 0;
+			}
 		}
-	}
 	}
 
 	override function update(elapsed:Float)

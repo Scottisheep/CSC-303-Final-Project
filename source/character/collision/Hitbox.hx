@@ -1,16 +1,14 @@
 package character.collision;
 
-import flixel.system.debug.FlxDebugger;
-import flixel.FlxSprite;
+import flixel.FlxObject;
 import flixel.math.FlxPoint;
-import flixel.util.FlxColor;
 import haxe.Timer;
+import flixel.util.FlxColor;
 
-class Hitbox extends FlxSprite
+class Hitbox extends FlxObject
 {
 	private var box:Int;
 	private var chr:Character;
-	private var spriteColor:FlxColor = 0x40FF0000;
 
 	private var offsetFromChr:FlxPoint = new FlxPoint(0, 0);
 
@@ -18,13 +16,15 @@ class Hitbox extends FlxSprite
 
 	override public function new(character:Character, boxNumber:Int)
 	{
-		debugBoundingBoxColor = FlxColor.RED;
 		box = boxNumber;
 		chr = character;
 		colliding = false;
 		super(0, 0);
-		makeGraphic(1, 1, spriteColor);
-		visible = false;
+		setSize(0, 0);
+
+		#if FLX_DEBUG
+		debugBoundingBoxColor = FlxColor.RED;
+		#end
 	}
 
 	public function checkAction()
@@ -42,7 +42,6 @@ class Hitbox extends FlxSprite
 			// }
 			if (chr.action == DebugAttack)
 			{
-				visible = true;
 				colliding = true;
 				var phase1Time:Int = 500;
 				var phase2Time:Int = 350;
@@ -50,46 +49,43 @@ class Hitbox extends FlxSprite
 				{
 					case 1:
 						offsetFromChr = FlxPoint.weak(70, 55);
-						makeGraphic(25, 25, spriteColor);
-						updateHitbox();
+						setSize(25, 25);
 						Timer.delay(function phase1()
 						{
 							offsetFromChr = FlxPoint.weak(70, 65);
-							makeGraphic(25, 25, spriteColor);
-							updateHitbox();
+							setSize(25, 25);
 							Timer.delay(function endAttack()
 							{
-								visible = false;
+								setSize(0, 0);
+								offsetFromChr = FlxPoint.weak(0, 0);
 								colliding = false;
 							}, phase2Time);
 						}, phase1Time);
 					case 2:
 						offsetFromChr = FlxPoint.weak(90, 35);
-						makeGraphic(35, 35, spriteColor);
-						updateHitbox();
+						setSize(35, 35);
 						Timer.delay(function phase1()
 						{
 							offsetFromChr = FlxPoint.weak(85, 65);
-							makeGraphic(35, 35, spriteColor);
-							updateHitbox();
+							setSize(35, 35);
 							Timer.delay(function endAttack()
 							{
-								visible = false;
+								setSize(0, 0);
+								offsetFromChr = FlxPoint.weak(0, 0);
 								colliding = false;
 							}, phase2Time);
 						}, phase1Time);
 					case 3:
 						offsetFromChr = FlxPoint.weak(105, 20);
-						makeGraphic(45, 45, spriteColor);
-						updateHitbox();
+						setSize(45, 45);
 						Timer.delay(function phase1()
 						{
 							offsetFromChr = FlxPoint.weak(105, 75);
-							makeGraphic(55, 55, spriteColor);
-							updateHitbox();
+							setSize(55, 55);
 							Timer.delay(function endAttack()
 							{
-								visible = false;
+								setSize(0, 0);
+								offsetFromChr = FlxPoint.weak(0, 0);
 								colliding = false;
 							}, phase2Time);
 						}, phase1Time);
