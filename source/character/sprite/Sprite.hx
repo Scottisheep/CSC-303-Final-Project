@@ -13,6 +13,8 @@ class Sprite extends FlxSprite
 		super(chr.position.x, chr.position.y);
 
 		loadGraphic(AssetPaths.fullAnimations__png, true, 75, 75);
+		setGraphicSize(Math.round(chr.width * 2.5), Math.round(chr.height * 1.25));
+		updateHitbox();
 
 		animation.add("none", [0], 0, true);
 		animation.add("forwardWalk", [0, 1, 2, 3, 4], 10, true);
@@ -56,8 +58,9 @@ class Sprite extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		pickAnimation();
 		x = chr.position.x;
-		y = chr.position.y;
+		y = chr.position.y - (0.25 * chr.height);
 		super.update(elapsed);
 	}
 }

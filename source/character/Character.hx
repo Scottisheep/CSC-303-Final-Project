@@ -30,7 +30,7 @@ enum Action
 class Character extends FlxGroup
 {
 	private static var OFFSET_FROM_SCREEN:Float = 65;
-	private static var PLAYER_START_Y:Float = 250;
+	private static var PLAYER_START_Y:Float = 200;
 
 	private var attackLength:Int;
 
@@ -42,8 +42,8 @@ class Character extends FlxGroup
 	public var action:Action = Ready;
 	public var actionJustStarted:Bool = true;
 
-	public var width:Int = 75;
-	public var height:Int = 150;
+	public var width:Int = 95;
+	public var height:Int = 190;
 	public var gravMod:Float = 250;
 	public var backwardsSpeedModifier:Float = 0.55;
 	public var speedCap:Float = 350;
