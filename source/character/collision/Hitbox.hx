@@ -40,57 +40,6 @@ class Hitbox extends FlxObject
 			// 	case NeutralSpecial:
 			// 	case BackSpecial:
 			// }
-			if (chr.action == DebugAttack)
-			{
-				colliding = true;
-				var phase1Time:Int = 500;
-				var phase2Time:Int = 350;
-				switch box
-				{
-					case 1:
-						offsetFromChr = FlxPoint.weak(70, 55);
-						setSize(25, 25);
-						Timer.delay(function phase1()
-						{
-							offsetFromChr = FlxPoint.weak(70, 65);
-							setSize(25, 25);
-							Timer.delay(function endAttack()
-							{
-								setSize(0, 0);
-								offsetFromChr = FlxPoint.weak(0, 0);
-								colliding = false;
-							}, phase2Time);
-						}, phase1Time);
-					case 2:
-						offsetFromChr = FlxPoint.weak(90, 35);
-						setSize(35, 35);
-						Timer.delay(function phase1()
-						{
-							offsetFromChr = FlxPoint.weak(85, 65);
-							setSize(35, 35);
-							Timer.delay(function endAttack()
-							{
-								setSize(0, 0);
-								offsetFromChr = FlxPoint.weak(0, 0);
-								colliding = false;
-							}, phase2Time);
-						}, phase1Time);
-					case 3:
-						offsetFromChr = FlxPoint.weak(105, 20);
-						setSize(45, 45);
-						Timer.delay(function phase1()
-						{
-							offsetFromChr = FlxPoint.weak(105, 75);
-							setSize(55, 55);
-							Timer.delay(function endAttack()
-							{
-								setSize(0, 0);
-								offsetFromChr = FlxPoint.weak(0, 0);
-								colliding = false;
-							}, phase2Time);
-						}, phase1Time);
-				}
-			}
 		}
 	}
 

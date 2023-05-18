@@ -52,6 +52,11 @@ class Pushbox extends FlxObject
 					acceleration.x = 0;
 			}
 		}
+		else
+		{
+			velocity = FlxPoint.weak(0, chr.gravMod);
+			acceleration = FlxPoint.weak(0, 0);
+		}
 	}
 
 	override function update(elapsed:Float)

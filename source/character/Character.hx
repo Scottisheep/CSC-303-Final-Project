@@ -21,18 +21,18 @@ enum Action
 	FrontAttack;
 	BackAttack;
 	NeutralAttack;
-	FrontSpecial;
-	BackSpecial;
-	NeutralSpecial;
+	// FrontSpecial;
+	// BackSpecial;
+	// NeutralSpecial;
 	Ready;
-	Recovery;
-	DebugAttack;
 }
 
 class Character extends FlxGroup
 {
 	private static var OFFSET_FROM_SCREEN:Float = 65;
-	private static var PLAYER_START_Y:Float = 250;
+	private static var PLAYER_START_Y:Float = 200;
+
+	private var attackLength:Int;
 
 	public var front:Bool;
 	public var back:Bool;
@@ -42,8 +42,8 @@ class Character extends FlxGroup
 	public var action:Action = Ready;
 	public var actionJustStarted:Bool = true;
 
-	public var width:Int = 75;
-	public var height:Int = 150;
+	public var width:Int = 95;
+	public var height:Int = 190;
 	public var gravMod:Float = 250;
 	public var backwardsSpeedModifier:Float = 0.55;
 	public var speedCap:Float = 350;
@@ -145,80 +145,68 @@ class Character extends FlxGroup
 						action = FrontAttack;
 						actionJustStarted = true;
 					}
-					else if (special)
-					{
-						action = FrontSpecial;
-						actionJustStarted = true;
-					}
+				// else if (special)
+				// {
+				// 	action = FrontSpecial;
+				// 	actionJustStarted = true;
+				// }
 				case Backwards:
 					if (attack)
 					{
 						action = BackAttack;
 						actionJustStarted = true;
 					}
-					else if (special)
-					{
-						action = BackSpecial;
-						actionJustStarted = true;
-					}
+				// else if (special)
+				// {
+				// 	action = BackSpecial;
+				// 	actionJustStarted = true;
+				// }
 				case Stationary:
 					if (attack)
 					{
 						action = NeutralAttack;
 						actionJustStarted = true;
 					}
-					else if (special)
-					{
-						action = NeutralSpecial;
-						actionJustStarted = true;
-					}
-			}
-
-			if (FlxG.keys.justPressed.SPACE)
-			{
-				action = DebugAttack;
-				actionJustStarted = true;
+					// else if (special)
+					// {
+					// 	action = NeutralSpecial;
+					// 	actionJustStarted = true;
+					// }
 			}
 		}
 	}
 
-	private function testAttack()
+	private function doAttack(len:Int)
 	{
-		trace("attack start");
 		for (box in hitboxes)
 		{
 			box.checkAction();
 		}
 		Timer.delay(function onAttackEnd()
 		{
-			trace("attack end");
-			action = Recovery;
-			trace("recovery start");
-			Timer.delay(function onRecoveryEnd()
-			{
-				trace("recovery end");
-				action = Ready;
-			}, 300);
-		}, 850);
+			action = Ready;
+		}, len);
 	}
 
 	private function execAction()
 	{
 		if (actionJustStarted)
 		{
-			// switch action
-			// {
-			// 	case FrontAttack:
-			// 	case NeutralAttack:
-			// 	case BackAttack:
-			// 	case FrontSpecial:
-			// 	case NeutralSpecial:
-			// 	case BackSpecial:
-			// }
-			if (action == DebugAttack)
+			switch action
 			{
-				testAttack();
-			} else {action = Ready;}
+				case FrontAttack:
+					attackLength = 666;
+				case NeutralAttack:
+					attackLength = 533;
+				case BackAttack:
+					attackLength = 466;
+				case Ready:
+					// case FrontSpecial:
+					// case NeutralSpecial:
+					// case BackSpecial:
+			}
+
+			doAttack(attackLength);
 			actionJustStarted = false;
 		}
 	}
