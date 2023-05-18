@@ -182,6 +182,10 @@ class Character extends FlxGroup
 		{
 			box.checkAction();
 		}
+		for (box in hurtboxes)
+		{
+			box.checkAction();
+		}
 		Timer.delay(function onAttackEnd()
 		{
 			action = Ready;

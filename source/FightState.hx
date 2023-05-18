@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxColor;
+import haxe.Timer;
 import character.Character;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -13,16 +15,14 @@ class FightState extends FlxState
 	var stage:Stage;
 	var leftScreenBound:ScreenBound;
 	var rightScreenBound:ScreenBound;
+	var winScreen:WinPopup;
 
 	override function create()
 	{
+		bgColor = FlxColor.CYAN;
 		super.create();
 		initCharacters();
 		initStage();
-
-		FlxG.watch.add(player1, "action");
-		FlxG.watch.add(player1, "direction");
-		FlxG.watch.add(player1, "actionJustStarted");
 	}
 
 	override function update(elapsed:Float)
@@ -58,5 +58,24 @@ class FightState extends FlxState
 		FlxG.collide(player2.pushbox, stage);
 		FlxG.collide(player1.pushbox, leftScreenBound);
 		FlxG.collide(player2.pushbox, rightScreenBound);
+
+		if (FlxG.overlap(player1.hitboxes, player2.hurtboxes))
+		{
+			winScreen = new WinPopup(true);
+			add(winScreen);
+			Timer.delay(function resetGame()
+			{
+				FlxG.resetState();
+			}, 3000);
+		}
+		if (FlxG.overlap(player2.hitboxes, player1.hurtboxes))
+		{
+			winScreen = new WinPopup(false);
+			add(winScreen);
+			Timer.delay(function resetGame()
+			{
+				FlxG.resetState();
+			}, 3000);
+		}
 	}
 }
