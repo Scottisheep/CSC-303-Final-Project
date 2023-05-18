@@ -14,10 +14,6 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-		if (FlxG.keys.justPressed.F)
-		{
-			FlxG.switchState(new FightState());
-		}
+		FlxG.switchState(new FightState());
 	}
 }
