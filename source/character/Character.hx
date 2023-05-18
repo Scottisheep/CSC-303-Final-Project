@@ -195,11 +195,11 @@ class Character extends FlxGroup
 			switch action
 			{
 				case FrontAttack:
-					attackLength = 1100;
+					attackLength = 666;
 				case NeutralAttack:
-					attackLength = 900;
+					attackLength = 533;
 				case BackAttack:
-					attackLength = 700;
+					attackLength = 466;
 				case Ready:
 					// case FrontSpecial:
 					// case NeutralSpecial:
